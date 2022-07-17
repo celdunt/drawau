@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DrawauFigureClass implements DrawauIFigure {
 
-    public class FieldProperty {
+    public static class FieldProperty {
         public FieldProperty(String vname, String vtype) {
             name = vname;
             type = vtype;
