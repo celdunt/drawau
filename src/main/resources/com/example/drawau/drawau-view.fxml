@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<HBox alignment="TOP_LEFT"
+      prefHeight="450"
+      prefWidth="800"
+      stylesheets="@drawau-style.css"
+      xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.drawau.DrawauController"
+>
+<children>
+
+    <VBox alignment="CENTER_LEFT"
+          maxWidth="40.0"
+          minWidth="40.0"
+          prefHeight="450.0"
+          minHeight="450.0"
+          styleClass="side-panel"
+    >
+        <children>
+
+            <Button fx:id="newButton"
+                    text="Создать"
+                    textFill="transparent"
+                    alignment="CENTER_RIGHT"
+                    minHeight="35.0"
+                    minWidth="35.0"
+                    prefWidth="35.0"
+                    prefHeight="35.0"
+                    styleClass="new-button"
+            >
+
+                <VBox.margin>
+                    <Insets left="2.5"/>
+                </VBox.margin>
+            </Button>
+
+            <Button fx:id="openButton"
+                    text="Открыть"
+                    textFill="transparent"
+                    alignment="CENTER_RIGHT"
+                    minHeight="35.0"
+                    minWidth="35.0"
+                    prefWidth="35.0"
+                    prefHeight="35.0"
+                    styleClass="open-button"
+            >
+
+                <VBox.margin>
+                    <Insets left="2.5" top="10.0"/>
+                </VBox.margin>
+            </Button>
+
+            <Button fx:id="saveButton"
+                    text="Сохранить"
+                    textFill="transparent"
+                    alignment="CENTER_RIGHT"
+                    minHeight="35.0"
+                    minWidth="35.0"
+                    prefWidth="35.0"
+                    prefHeight="35.0"
+                    styleClass="save-button"
+            >
+
+                <VBox.margin>
+                    <Insets left="2.5" top="10.0"/>
+                </VBox.margin>
+
+            </Button>
+
+            <Button fx:id="magicButton"
+                    text="Магия"
+                    textFill="transparent"
+                    alignment="CENTER_RIGHT"
+                    minHeight="35.0"
+                    minWidth="35.0"
+                    prefWidth="35.0"
+                    prefHeight="35.0"
+                    styleClass="magic-button"
+            >
+
+                <VBox.margin>
+                    <Insets left="2.5" top="10.0"/>
+                </VBox.margin>
+
+            </Button>
+
+            <Button fx:id="figuresButton"
+                    text="Фигуры"
+                    textFill="transparent"
+                    alignment="CENTER_RIGHT"
+                    minHeight="35.0"
+                    minWidth="35.0"
+                    prefWidth="35.0"
+                    prefHeight="35.0"
+                    styleClass="figures-button"
+            >
+
+                <VBox.margin>
+                    <Insets left="2.5" top="10.0"/>
+                </VBox.margin>
+
+            </Button>
+
+        </children>
+    </VBox>
+
+    <FlowPane fx:id="figuresPanel"
+              prefWidth="100.0"
+              prefHeight="100.0"
+              maxHeight="100.0"
+              prefWrapLength="100.0"
+              styleClass="flow-pane-figures"
+              visible="false"
+    >
+
+        <padding>
+            <Insets top="5.0" left="5.0" right="5.0" bottom="5.0"/>
+        </padding>
+
+        <children>
+
+            <Button fx:id="classFigure"
+                    text="К"
+                    textAlignment="CENTER"
+                    textFill="white"
+                    alignment="CENTER_RIGHT"
+                    minHeight="25.0"
+                    minWidth="25.0"
+                    prefWidth="25.0"
+                    prefHeight="25.0"
+                    styleClass="class-figure-button"
+            >
+
+                <VBox.margin>
+                    <Insets left="12.5" top="10.0"/>
+                </VBox.margin>
+
+            </Button>
+
+        </children>
+    </FlowPane>
+
+</children>
+</HBox>

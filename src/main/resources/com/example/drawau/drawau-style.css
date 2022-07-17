@@ -1,0 +1,44 @@
+.side-panel {
+    -fx-background-color: #635380;
+}
+
+.flow-pane-figures {
+    -fx-background-color: #635380;
+}
+
+.side-button {
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-background-color: #2E1F44;
+}
+
+.new-button, .open-button, .save-button, .magic-button, .figures-button {
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-background-color: #59336A;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 35px 35px;
+    -fx-font-weight: 700;
+}
+
+.new-button {
+    -fx-background-image: url('images/file.png');
+}
+.open-button {
+    -fx-background-image: url('images/folder.png');
+}
+.save-button {
+    -fx-background-image: url('images/save.png');
+}
+.magic-button {
+    -fx-background-image: url('images/magic.png');
+}
+.figures-button {
+    -fx-background-image: url('images/figures.png');
+}
+.class-figure-button {
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-background-color: #59336A;
+    -fx-font-weight: 700;
+}
