@@ -42,3 +42,8 @@
     -fx-background-color: #59336A;
     -fx-font-weight: 700;
 }
+
+.text-style {
+    -fx-fill: #fff;
+    -fx-font-size: 14px;
+}
