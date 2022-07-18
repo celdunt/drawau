@@ -12,7 +12,7 @@
     -fx-background-color: #2E1F44;
 }
 
-.new-button, .open-button, .save-button, .magic-button, .figures-button {
+.new-button, .openf-button, .save-button, .magic-button, .figures-button {
     -fx-background-radius: 25px;
     -fx-border-radius: 25px;
     -fx-background-color: #59336A;
@@ -24,7 +24,7 @@
 .new-button {
     -fx-background-image: url('images/file.png');
 }
-.open-button {
+.openf-button {
     -fx-background-image: url('images/folder.png');
 }
 .save-button {
