@@ -160,9 +160,10 @@
                   prefHeight="200"
                   prefWidth="250"
                   style="-fx-background-color: #635380;"
-                  layoutX="100"
-                  layoutY="150"
+                  layoutX="150"
+                  layoutY="200"
                   alignment="TOP_CENTER"
+                  visible="false"
             />
 
         </children>

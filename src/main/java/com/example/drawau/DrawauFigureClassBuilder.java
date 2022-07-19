@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DrawauFigureClassBuilder {
     protected double width = 100;
-    protected double height = 150;
+    protected double height = 100;
     protected String style = "-fx-background-color: #635380";
     protected String type = DrawauFigureClass.TYPE_SIMPLE;
     protected String name = "myClass";
@@ -37,14 +37,14 @@ public class DrawauFigureClassBuilder {
         return this;
     }
 
-    public DrawauFigureClassBuilder addFields(DrawauFigureClass.FieldProperty... values) {
-        fields.addAll(List.of(values));
+    public DrawauFigureClassBuilder addFields(List<DrawauFigureClass.FieldProperty> values) {
+        fields.addAll(values);
 
         return this;
     }
 
-    public DrawauFigureClassBuilder addMethods(DrawauFigureClass.FieldProperty... values) {
-        methods.addAll(List.of(values));
+    public DrawauFigureClassBuilder addMethods(List<DrawauFigureClass.FieldProperty> values) {
+        methods.addAll(values);
 
         return this;
     }

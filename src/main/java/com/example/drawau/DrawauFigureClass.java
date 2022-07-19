@@ -104,7 +104,7 @@ public class DrawauFigureClass implements DrawauIFigure {
         //Header-part
         HBox header_part = new HBox();
         header_part.alignmentProperty().set(Pos.CENTER);
-        header_part.setStyle(setMargin("0 0 10 0"));
+        header_part.setStyle(setMargin("0 10 10 10"));
 
         Text header_part_typeClass = new Text(type + " ");
         Text header_part_nameClass = new Text(name);
@@ -116,15 +116,16 @@ public class DrawauFigureClass implements DrawauIFigure {
 
         container.getChildren().add(header_part);
 
-        //Пишем окно, где будет создаваться фигура класа и определяться весь контент
-
         //Middle-part
         for (FieldProperty field : fields) {
             HBox middle_part = new HBox();
-            middle_part.setAlignment(Pos.CENTER);
+            middle_part.setAlignment(Pos.BASELINE_CENTER);
 
-            Text middle_part_fieldName = new Text(field.getName());
-            Text middle_part_fieldType = new Text(field.getType());
+            Text middle_part_fieldName = new Text("-" + field.getName());
+            Text middle_part_fieldType = new Text("  " + field.getType());
+
+            middle_part_fieldName.getStyleClass().add("text-style");
+            middle_part_fieldType.getStyleClass().add("text-style");
 
             middle_part.getChildren().add(middle_part_fieldName);
             middle_part.getChildren().add(middle_part_fieldType);
@@ -132,13 +133,18 @@ public class DrawauFigureClass implements DrawauIFigure {
             container.getChildren().add(middle_part);
         }
 
+        container.getChildren().get((int)container.getChildren().stream().count()-1).setStyle(setMargin("0 0 10 0"));
+
         //Bottom-part
         for (FieldProperty method : methods) {
             HBox bottom_part = new HBox();
-            bottom_part.setAlignment(Pos.CENTER);
+            bottom_part.setAlignment(Pos.BASELINE_CENTER);
 
-            Text bottom_part_methodName = new Text(method.getName());
-            Text bottom_part_methodType = new Text(method.getType());
+            Text bottom_part_methodName = new Text("+" + method.getName());
+            Text bottom_part_methodType = new Text("  " + method.getType());
+
+            bottom_part_methodName.getStyleClass().add("text-style");
+            bottom_part_methodType.getStyleClass().add("text-style");
 
             bottom_part.getChildren().add(bottom_part_methodName);
             bottom_part.getChildren().add(bottom_part_methodType);
