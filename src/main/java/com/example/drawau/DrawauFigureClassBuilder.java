@@ -11,6 +11,7 @@ public class DrawauFigureClassBuilder {
     protected String name = "myClass";
     protected List<DrawauFigureClass.FieldProperty> fields = new ArrayList<>();
     protected List<DrawauFigureClass.FieldProperty> methods = new ArrayList<>();
+    private DrawauIFigure observer;
 
     public DrawauFigureClassBuilder addSize(double hvalue, double vvalue) {
         width = hvalue;
@@ -45,6 +46,12 @@ public class DrawauFigureClassBuilder {
 
     public DrawauFigureClassBuilder addMethods(List<DrawauFigureClass.FieldProperty> values) {
         methods.addAll(values);
+
+        return this;
+    }
+
+    public DrawauFigureClassBuilder addObserver(DrawauIFigure value) {
+        observer = value;
 
         return this;
     }

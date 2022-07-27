@@ -126,6 +126,8 @@
                       maxHeight="100.0"
                       prefWrapLength="100.0"
                       styleClass="flow-pane-figures"
+                      hgap="5"
+                      vgap="5"
                       visible="false"
             >
 
@@ -146,11 +148,45 @@
                             prefHeight="25.0"
                             styleClass="class-figure-button"
                     >
+                    </Button>
 
-                        <VBox.margin>
-                            <Insets left="12.5" top="10.0"/>
-                        </VBox.margin>
+                    <Button fx:id="inheritArrow"
+                            text="H"
+                            textAlignment="CENTER"
+                            textFill="white"
+                            alignment="CENTER_RIGHT"
+                            minHeight="25.0"
+                            minWidth="25.0"
+                            prefWidth="25.0"
+                            prefHeight="25.0"
+                            styleClass="class-figure-button"
+                    >
+                    </Button>
 
+                    <Button fx:id="dependenceArrow"
+                            text="3"
+                            textAlignment="CENTER"
+                            textFill="white"
+                            alignment="CENTER_RIGHT"
+                            minHeight="25.0"
+                            minWidth="25.0"
+                            prefWidth="25.0"
+                            prefHeight="25.0"
+                            styleClass="class-figure-button"
+                    >
+                    </Button>
+
+                    <Button fx:id="aggregationArrow"
+                            text="A"
+                            textAlignment="CENTER"
+                            textFill="white"
+                            alignment="CENTER_RIGHT"
+                            minHeight="25.0"
+                            minWidth="25.0"
+                            prefWidth="25.0"
+                            prefHeight="25.0"
+                            styleClass="class-figure-button"
+                    >
                     </Button>
 
                 </children>

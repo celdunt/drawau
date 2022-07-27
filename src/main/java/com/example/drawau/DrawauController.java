@@ -2,6 +2,7 @@ package com.example.drawau;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -34,8 +35,58 @@ public class DrawauController {
     public List<DrawauFigureClass.FieldProperty> methods = new ArrayList<>();
 
     public VBox classFigurePanel;
+    public Button inheritArrow;
+    public Button dependenceArrow;
+    public Button aggregationArrow;
+
+    List<DrawauFigureClass> flist = new ArrayList<>();
+    public static List<DrawauArrow> arrows = new ArrayList<>();
+
+    public static String ACTION = "null";
 
     public void initialize() {
+        // new button behavior
+        newButton.setOnAction(action -> {
+            workSpace.getChildren().clear();
+            workSpace.getChildren().addAll(
+                    classFigurePanel,
+                    figuresPanel
+            );
+        });
+
+        // add arrow button behavior
+        inheritArrow.setOnAction(action -> {
+            DrawauInheritArrow ar = new DrawauInheritArrow();
+            ar.locate(workSpace);
+            DrawauController.arrows.add(ar);
+            ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
+
+
+            // region месаге
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("Начинаем подписывать!");
+
+            alert.showAndWait();
+            // endregion
+        });
+
+        dependenceArrow.setOnAction(action -> {
+            DrawauDependenceArrow ar = new DrawauDependenceArrow();
+            ar.locate(workSpace);
+            DrawauController.arrows.add(ar);
+            ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
+        });
+
+        aggregationArrow.setOnAction(action -> {
+            DrawauAggregationArrow ar = new DrawauAggregationArrow();
+            ar.locate(workSpace);
+            DrawauController.arrows.add(ar);
+            ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
+        });
+
         // add class figure panel behavior
         AtomicReference<Double> pressContainerX = new AtomicReference<>((double) 0);
         AtomicReference<Double> pressContainerY = new AtomicReference<>((double) 0);
@@ -143,6 +194,8 @@ public class DrawauController {
                             .build();
             f1.locate(workSpace);
             f1.draw();
+
+            flist.add(f1);
 
             classFigurePanel.setVisible(false);
             classFigurePanel.getChildren().clear();

@@ -1,6 +1,7 @@
 package com.example.drawau;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -32,11 +33,16 @@ public class DrawauFigureClass implements DrawauIFigure {
     public static final String TYPE_SIMPLE = "class";
     public static final String TYPE_INTERFACE = "interface";
 
+    public static final String SUBSCRIBE_IN = "sub in";
+    public static final String SUBSCRIBE_OUT = "sub out";
 
     private String type;
     private String name;
     private List<FieldProperty> fields = new ArrayList<>();
     private List<FieldProperty> methods = new ArrayList<>();
+
+    private List<DrawauArrow> subscribersIn = new ArrayList<>();
+    private List<DrawauArrow> subscribersOut = new ArrayList<>();
 
     private VBox container = new VBox();
 
@@ -51,11 +57,14 @@ public class DrawauFigureClass implements DrawauIFigure {
         container.setPrefSize(builder.width, builder.height);
         container.setStyle(builder.style);
         addDragAction();
+        addClickAction();
 
         type = builder.type;
         name = builder.name;
         fields = builder.fields;
         methods = builder.methods;
+
+
     }
 
 
@@ -75,7 +84,6 @@ public class DrawauFigureClass implements DrawauIFigure {
     public double getWidth() { return container.getWidth(); }
     public double getHeight() { return container.getHeight(); }
 
-
     public static String setMargin(String marginValue) {
         return "-fx-padding: " + marginValue +
                 "; -fx-border-insets: " + marginValue +
@@ -90,9 +98,71 @@ public class DrawauFigureClass implements DrawauIFigure {
         container.setOnMouseDragged(action -> {
             container.setLayoutX(action.getSceneX() - pressContainerX - DrawauController.SIDE_PANEL_WIDTH);
             container.setLayoutY(action.getSceneY() - pressContainerY);
+
+            for (DrawauArrow arrow : subscribersIn) {
+                arrow.setEndX(container.getLayoutX()  + container.getPrefWidth()/2);
+                arrow.setEndY(container.getLayoutY());
+
+                arrow.draw();
+            }
+
+            for (DrawauArrow arrow : subscribersOut) {
+                arrow.setStartX(container.getLayoutX() + container.getPrefWidth()/2);
+                arrow.setStartY(container.getLayoutY() + container.getPrefHeight());
+
+                arrow.draw();
+            }
         });
     }
 
+    private void addClickAction() {
+        container.onMouseClickedProperty().set(action -> {
+            if (DrawauController.arrows.stream().count() != 0 && DrawauController.ACTION != "null") {
+                subscribe(DrawauController.arrows.get((int)DrawauController.arrows.stream().count()-1),
+                        DrawauController.ACTION);
+            }
+        });
+    }
+
+    public void subscribe(DrawauArrow sub, String mode) {
+        switch (mode) {
+            case SUBSCRIBE_IN -> {
+                sub.setEndX(container.getLayoutX() + container.getPrefWidth()/2);
+                sub.setEndY(container.getLayoutY());
+                subscribersIn.add(sub);
+                sub.draw();
+
+                DrawauController.ACTION = "null";
+
+                // region месаге
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("Подписываем входца!");
+
+                alert.showAndWait();
+                // endregion
+            }
+            case SUBSCRIBE_OUT -> {
+                sub.setStartX(container.getLayoutX() + container.getPrefWidth()/2);
+                sub.setStartY(container.getLayoutY() + container.getPrefHeight());
+                subscribersOut.add(sub);
+
+                DrawauController.ACTION = SUBSCRIBE_IN;
+
+                // region месаге
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("Подписываем выходца!");
+
+                alert.showAndWait();
+                // endregion
+            }
+        }
+    }
 
     @Override
     public void locate(Pane location) {
@@ -152,4 +222,5 @@ public class DrawauFigureClass implements DrawauIFigure {
             container.getChildren().add(bottom_part);
         }
     }
+
 }
