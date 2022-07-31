@@ -20,20 +20,41 @@ public class DrawauDependenceArrow extends DrawauArrow {
         G.getChildren().clear();
 
         Polygon PL = new Polygon();
-        PL.getPoints().addAll(
-                startX, startY,
-                startX - 5, startY + 10,
-                startX + 5, startY + 10
-        );
-        PL.setFill(Color.BLACK);
-        PL.setStroke(Color.BLACK);
-
         Line line = new Line();
-        line.setStartX(startX);
-        line.setStartY(startY + 10);
-        line.setEndX(endX);
-        line.setEndY(endY);
-        line.setStroke(Color.BLACK);
+
+        if (startY < endY) {
+            double sY = startY + startHeightContainer;
+
+            line.setStartX(startX);
+            line.setStartY(sY);
+            line.setEndX(endX);
+            line.setEndY(endY - 10);
+
+            PL.getPoints().addAll(
+                    endX, endY - 10,
+                    endX - 5, endY - 10,
+                    endX, endY,
+                    endX + 5, endY - 10
+            );
+            PL.setFill(Color.BLACK);
+            PL.setStroke(Color.BLACK);
+        } else if (startY > endY) {
+            double eY = endY + endHeightContainer;
+
+            PL.getPoints().addAll(
+                    endX, eY,
+                    endX - 5, eY + 10,
+                    endX + 5, eY + 10
+            );
+            PL.setFill(Color.BLACK);
+            PL.setStroke(Color.BLACK);
+
+            line.setStartX(startX);
+            line.setStartY(startY);
+            line.setEndX(endX);
+            line.setEndY(eY + 10);
+        }
+
         line.getStrokeDashArray().addAll(8d, 4d);
 
         G.getChildren().addAll(PL, line);

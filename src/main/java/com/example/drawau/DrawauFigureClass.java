@@ -63,8 +63,6 @@ public class DrawauFigureClass implements DrawauIFigure {
         name = builder.name;
         fields = builder.fields;
         methods = builder.methods;
-
-
     }
 
 
@@ -99,19 +97,13 @@ public class DrawauFigureClass implements DrawauIFigure {
             container.setLayoutX(action.getSceneX() - pressContainerX - DrawauController.SIDE_PANEL_WIDTH);
             container.setLayoutY(action.getSceneY() - pressContainerY);
 
-            for (DrawauArrow arrow : subscribersIn) {
-                arrow.setEndX(container.getLayoutX()  + container.getPrefWidth()/2);
-                arrow.setEndY(container.getLayoutY());
+            for (DrawauArrow arrow : subscribersIn)
+                arrow.notifyAction(arrow.getStartX(), arrow.getStartY(),
+                        container.getLayoutX()  + arrow.getEndSelfPosX(), container.getLayoutY());
 
-                arrow.draw();
-            }
-
-            for (DrawauArrow arrow : subscribersOut) {
-                arrow.setStartX(container.getLayoutX() + container.getPrefWidth()/2);
-                arrow.setStartY(container.getLayoutY() + container.getPrefHeight());
-
-                arrow.draw();
-            }
+            for (DrawauArrow arrow : subscribersOut)
+                arrow.notifyAction(container.getLayoutX() + arrow.getStartSelfPosX(), container.getLayoutY(),
+                        arrow.getEndX(), arrow.getEndY());
         });
     }
 
@@ -119,47 +111,35 @@ public class DrawauFigureClass implements DrawauIFigure {
         container.onMouseClickedProperty().set(action -> {
             if (DrawauController.arrows.stream().count() != 0 && DrawauController.ACTION != "null") {
                 subscribe(DrawauController.arrows.get((int)DrawauController.arrows.stream().count()-1),
-                        DrawauController.ACTION);
+                        action.getX(), DrawauController.ACTION);
             }
         });
     }
 
-    public void subscribe(DrawauArrow sub, String mode) {
+    public void subscribe(DrawauArrow sub, double selfX, String mode) {
         switch (mode) {
             case SUBSCRIBE_IN -> {
-                sub.setEndX(container.getLayoutX() + container.getPrefWidth()/2);
+                sub.setEndX(container.getLayoutX() + selfX);
+                sub.setEndSelfPosX(selfX);
+                sub.setEndHeightContainer(container.getHeight());
                 sub.setEndY(container.getLayoutY());
                 subscribersIn.add(sub);
                 sub.draw();
 
                 DrawauController.ACTION = "null";
 
-                // region месаге
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Подписываем входца!");
-
-                alert.showAndWait();
-                // endregion
+                DrawauController.subscribeStatusText.setValue("");
             }
             case SUBSCRIBE_OUT -> {
-                sub.setStartX(container.getLayoutX() + container.getPrefWidth()/2);
-                sub.setStartY(container.getLayoutY() + container.getPrefHeight());
+                sub.setStartX(container.getLayoutX() + selfX);
+                sub.setStartSelfPosX(selfX);
+                sub.setStartHeightContainer(container.getHeight());
+                sub.setStartY(container.getLayoutY());
                 subscribersOut.add(sub);
 
                 DrawauController.ACTION = SUBSCRIBE_IN;
 
-                // region месаге
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Подписываем выходца!");
-
-                alert.showAndWait();
-                // endregion
+                DrawauController.subscribeStatusText.setValue("Отметьте конечную точку.");
             }
         }
     }

@@ -1,11 +1,10 @@
 package com.example.drawau;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -16,16 +15,26 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DrawauController {
+
     public Button figuresButton;
     public Button magicButton;
     public Button saveButton;
     public Button openButton;
     public Button newButton;
-    public FlowPane figuresPanel;
-    public Pane workSpace;
     public Button classFigure;
 
+    public Button inheritArrow;
+    public Button dependenceArrow;
+    public Button aggregationArrow;
+
+    public FlowPane figuresPanel;
+    public Pane workSpace;
+    public VBox classFigurePanel;
+    public HBox mainControl;
+
+
     public static final double SIDE_PANEL_WIDTH = 40;
+
     public ChoiceBox<String> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(
             DrawauFigureClass.TYPE_INTERFACE,
             DrawauFigureClass.TYPE_SIMPLE,
@@ -34,18 +43,37 @@ public class DrawauController {
     public List<DrawauFigureClass.FieldProperty> fields = new ArrayList<>();
     public List<DrawauFigureClass.FieldProperty> methods = new ArrayList<>();
 
-    public VBox classFigurePanel;
-    public Button inheritArrow;
-    public Button dependenceArrow;
-    public Button aggregationArrow;
+    public Label subscribeArrowStatus;
 
-    List<DrawauFigureClass> flist = new ArrayList<>();
+
+    List<DrawauFigureClass> figures = new ArrayList<>();
     public static List<DrawauArrow> arrows = new ArrayList<>();
 
     public static String ACTION = "null";
+    public static StringProperty subscribeStatusText = new SimpleStringProperty();
+
 
     public void initialize() {
-        // new button behavior
+        bindSubscribeStatusLabel();
+
+        setNewButtonBehavior();
+
+        setArrowButtonBehavior();
+
+        setClassFigurePanelBehavior();
+
+        addClassFigurePanelContent(classFigurePanel);
+
+        addAnimationsForButtons();
+
+        setClassFigureButtonBehavior();
+    }
+
+    public void bindSubscribeStatusLabel() {
+        subscribeStatusText.bindBidirectional(subscribeArrowStatus.textProperty());
+    }
+
+    public void setNewButtonBehavior() {
         newButton.setOnAction(action -> {
             workSpace.getChildren().clear();
             workSpace.getChildren().addAll(
@@ -53,24 +81,16 @@ public class DrawauController {
                     figuresPanel
             );
         });
+    }
 
-        // add arrow button behavior
+    public void setArrowButtonBehavior() {
         inheritArrow.setOnAction(action -> {
             DrawauInheritArrow ar = new DrawauInheritArrow();
             ar.locate(workSpace);
             DrawauController.arrows.add(ar);
             ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
 
-
-            // region месаге
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Начинаем подписывать!");
-
-            alert.showAndWait();
-            // endregion
+            subscribeStatusText.setValue("Отметьте начальную точку");
         });
 
         dependenceArrow.setOnAction(action -> {
@@ -78,6 +98,8 @@ public class DrawauController {
             ar.locate(workSpace);
             DrawauController.arrows.add(ar);
             ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
+
+            subscribeStatusText.setValue("Отметьте начальную точку");
         });
 
         aggregationArrow.setOnAction(action -> {
@@ -85,9 +107,12 @@ public class DrawauController {
             ar.locate(workSpace);
             DrawauController.arrows.add(ar);
             ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
-        });
 
-        // add class figure panel behavior
+            subscribeStatusText.setValue("Отметьте начальную точку");
+        });
+    }
+
+    public void setClassFigurePanelBehavior() {
         AtomicReference<Double> pressContainerX = new AtomicReference<>((double) 0);
         AtomicReference<Double> pressContainerY = new AtomicReference<>((double) 0);
         classFigurePanel.onMousePressedProperty().set(action -> {
@@ -98,11 +123,9 @@ public class DrawauController {
             classFigurePanel.setLayoutX(action.getSceneX() - pressContainerX.get() - DrawauController.SIDE_PANEL_WIDTH);
             classFigurePanel.setLayoutY(action.getSceneY() - pressContainerY.get());
         });
+    }
 
-        // add class figure panel content
-        addClassFigurePanelContent(classFigurePanel);
-
-        // add listener for button
+    public void addAnimationsForButtons() {
         DrawauAnimation.setButtonWidthAnimation(
                 newButton,
                 openButton,
@@ -111,8 +134,9 @@ public class DrawauController {
                 figuresButton
         );
         DrawauAnimation.setClickFiguresButtonAnimation(figuresButton, figuresPanel);
+    }
 
-        //add classfigure
+    public void setClassFigureButtonBehavior() {
         classFigure.setOnAction(action -> {
             classFigurePanel.setVisible(true);
         });
@@ -195,7 +219,7 @@ public class DrawauController {
             f1.locate(workSpace);
             f1.draw();
 
-            flist.add(f1);
+            figures.add(f1);
 
             classFigurePanel.setVisible(false);
             classFigurePanel.getChildren().clear();
