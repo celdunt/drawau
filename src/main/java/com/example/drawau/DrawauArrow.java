@@ -1,6 +1,10 @@
 package com.example.drawau;
 
+import javafx.scene.Group;
+
 public abstract class DrawauArrow implements DrawauIFigure {
+    transient Group G = new Group();
+
     protected double startX;
     protected double startSelfPosX;
     protected double startY;
@@ -33,6 +37,10 @@ public abstract class DrawauArrow implements DrawauIFigure {
 
     public double getStartHeightContainer() { return startHeightContainer; }
     public double getEndHeightContainer() { return endHeightContainer; }
+
+    public void initialize() {
+        G = new Group();
+    }
 
     public void notifyAction(double sX, double sY, double eX, double eY) {
         startX = sX;

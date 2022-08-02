@@ -9,7 +9,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -58,6 +61,12 @@ public class DrawauController {
 
         setNewButtonBehavior();
 
+        setOpenButtonBehavior();
+
+        setSaveButtonBehavior();
+
+        setMagicButtonBehavior();
+
         setArrowButtonBehavior();
 
         setClassFigurePanelBehavior();
@@ -80,6 +89,49 @@ public class DrawauController {
                     classFigurePanel,
                     figuresPanel
             );
+        });
+    }
+
+    public void setOpenButtonBehavior() {
+        openButton.setOnAction(action -> {
+            FileChooser fileChooser = new FileChooser();
+
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("drawau files (*.drawau)", "*.drawau"));
+
+            File file = fileChooser.showOpenDialog(null);
+
+            if (file != null)
+                DrawauFileManager.openDrawauFile(figures, arrows, file, workSpace);
+        });
+    }
+
+    public void setSaveButtonBehavior() {
+        saveButton.setOnAction(action -> {
+            FileChooser fileChooser = new FileChooser();
+
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("png files (*.png)", "*.png"),
+                    new FileChooser.ExtensionFilter("drawau files (*.drawau)", "*.drawau"));
+
+            File file = fileChooser.showSaveDialog(null);
+
+            if (file != null) {
+                if (file.getName().endsWith(".png"))
+                    DrawauFileManager.saveImageFile(workSpace, file);
+                else if (file.getName().endsWith(".drawau"))
+                    DrawauFileManager.saveDrawauFile(figures, arrows, file);
+            }
+        });
+    }
+
+    public void setMagicButtonBehavior() {
+        magicButton.setOnAction(action -> {
+            try {
+                DrawauFileManager.doMagic();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 

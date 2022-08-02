@@ -7,9 +7,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 
 public class DrawauDependenceArrow extends DrawauArrow {
-
-    Group G = new Group();
-
     @Override
     public void locate(Pane location) {
         location.getChildren().add(G);

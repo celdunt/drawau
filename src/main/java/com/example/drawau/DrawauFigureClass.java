@@ -7,12 +7,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrawauFigureClass implements DrawauIFigure {
 
-    public static class FieldProperty {
+    public static class FieldProperty implements Serializable {
         public FieldProperty(String vname, String vtype) {
             name = vname;
             type = vtype;
@@ -44,7 +45,10 @@ public class DrawauFigureClass implements DrawauIFigure {
     private List<DrawauArrow> subscribersIn = new ArrayList<>();
     private List<DrawauArrow> subscribersOut = new ArrayList<>();
 
-    private VBox container = new VBox();
+    private double layoutX;
+    private double layoutY;
+
+    transient private VBox container = new VBox();
 
 
     double pressContainerX = 0;
@@ -56,6 +60,8 @@ public class DrawauFigureClass implements DrawauIFigure {
         container.alignmentProperty().set(Pos.TOP_CENTER);
         container.setPrefSize(builder.width, builder.height);
         container.setStyle(builder.style);
+        container.setLayoutX(builder.layoutX);
+        container.setLayoutY(builder.layoutY);
         addDragAction();
         addClickAction();
 
@@ -63,6 +69,8 @@ public class DrawauFigureClass implements DrawauIFigure {
         name = builder.name;
         fields = builder.fields;
         methods = builder.methods;
+        layoutX = builder.layoutX;
+        layoutY = builder.layoutY;
     }
 
 
@@ -81,11 +89,34 @@ public class DrawauFigureClass implements DrawauIFigure {
     public void setStyle(String value) { container.setStyle(value); }
     public double getWidth() { return container.getWidth(); }
     public double getHeight() { return container.getHeight(); }
+    public void setLayoutX(double value) {
+        layoutX = value;
+        container.setLayoutX(layoutX);
+    }
+    public void setLayoutY(double value) {
+        layoutY = value;
+        container.setLayoutY(layoutY);
+    }
+    public double getLayoutX() { return layoutX; }
+    public double getLayoutY() { return layoutY; }
 
     public static String setMargin(String marginValue) {
         return "-fx-padding: " + marginValue +
                 "; -fx-border-insets: " + marginValue +
                 "; -fx-background-insets: " + marginValue + ";";
+    }
+
+    public void initialize() {
+        container = new VBox();
+
+        container.alignmentProperty().set(Pos.TOP_CENTER);
+        container.setPrefSize(new DrawauFigureClassBuilder().width, new DrawauFigureClassBuilder().height);
+        container.setStyle(new DrawauFigureClassBuilder().style);
+        container.setLayoutX(layoutX);
+        container.setLayoutY(layoutY);
+
+        addDragAction();
+        addClickAction();
     }
 
     private void addDragAction() {
@@ -94,8 +125,10 @@ public class DrawauFigureClass implements DrawauIFigure {
             pressContainerY = action.getY();
         });
         container.setOnMouseDragged(action -> {
-            container.setLayoutX(action.getSceneX() - pressContainerX - DrawauController.SIDE_PANEL_WIDTH);
-            container.setLayoutY(action.getSceneY() - pressContainerY);
+            layoutX = action.getSceneX() - pressContainerX - DrawauController.SIDE_PANEL_WIDTH;
+            container.setLayoutX(layoutX);
+            layoutY = action.getSceneY() - pressContainerY;
+            container.setLayoutY(layoutY);
 
             for (DrawauArrow arrow : subscribersIn)
                 arrow.notifyAction(arrow.getStartX(), arrow.getStartY(),

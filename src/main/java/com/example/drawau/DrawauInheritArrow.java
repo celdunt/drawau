@@ -11,8 +11,6 @@ import javafx.scene.shape.*;
 
 
 public class DrawauInheritArrow extends DrawauArrow{
-    Group G = new Group();
-
     public DrawauInheritArrow() {}
 
     @Override

@@ -2,7 +2,9 @@ package com.example.drawau;
 
 import javafx.scene.layout.Pane;
 
-public interface DrawauIFigure {
+import java.io.Serializable;
+
+public interface DrawauIFigure extends Serializable {
     void locate(Pane location);
     void draw();
 }
