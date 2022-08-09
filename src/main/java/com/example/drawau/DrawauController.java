@@ -128,7 +128,7 @@ public class DrawauController {
     public void setMagicButtonBehavior() {
         magicButton.setOnAction(action -> {
             try {
-                DrawauFileManager.doMagic();
+                DrawauFileManager.doMagic(workSpace);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -13,7 +13,6 @@ public class DrawauApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(DrawauApplication.class.getResource("drawau-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 450);
         stage.setTitle("drawau");
-        //stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
