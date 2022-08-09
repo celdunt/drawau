@@ -61,11 +61,11 @@ public class DrawauFileManager {
         }
     }
 
-    public static void doMagic(Pane location) throws IOException {
+    public static List<DrawauFigureClass> doMagic(Pane location) throws IOException {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File file = directoryChooser.showDialog(null);
 
-        if (file == null) return;
+        if (file == null) return new ArrayList<>();
 
         List<Path> classes =
                 Files.walk(Paths.get(file.getPath()))
@@ -272,5 +272,7 @@ public class DrawauFileManager {
             figures.get(i).notifySubscribers();
         }
 
+
+        return figures;
     }
 }

@@ -36,11 +36,28 @@
 .figures-button {
     -fx-background-image: url('images/figures.png');
 }
-.class-figure-button {
+.class-figure-button, .cr-figure, .cr-inh-arrow, .cr-dep-arrow, .cr-agg-arrow {
     -fx-background-radius: 25px;
     -fx-border-radius: 25px;
     -fx-background-color: #59336A;
+    -fx-background-size: 25px 25px;
     -fx-font-weight: 700;
+}
+
+.cr-figure {
+    -fx-background-image: url('images/cr-figure.png');
+}
+
+.cr-inh-arrow {
+    -fx-background-image: url('images/cr-inh-arrow.png');
+}
+
+.cr-dep-arrow {
+    -fx-background-image: url('images/cr-dep-arrow.png');
+}
+
+.cr-agg-arrow {
+    -fx-background-image: url('images/cr-agg-arrow.png');
 }
 
 .text-style {

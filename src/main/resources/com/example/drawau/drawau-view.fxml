@@ -140,7 +140,6 @@
                 <children>
 
                     <Button fx:id="classFigure"
-                            text="К"
                             textAlignment="CENTER"
                             textFill="white"
                             alignment="CENTER_RIGHT"
@@ -148,12 +147,11 @@
                             minWidth="25.0"
                             prefWidth="25.0"
                             prefHeight="25.0"
-                            styleClass="class-figure-button"
+                            styleClass="cr-figure"
                     >
                     </Button>
 
                     <Button fx:id="inheritArrow"
-                            text="H"
                             textAlignment="CENTER"
                             textFill="white"
                             alignment="CENTER_RIGHT"
@@ -161,12 +159,11 @@
                             minWidth="25.0"
                             prefWidth="25.0"
                             prefHeight="25.0"
-                            styleClass="class-figure-button"
+                            styleClass="cr-inh-arrow"
                     >
                     </Button>
 
                     <Button fx:id="dependenceArrow"
-                            text="3"
                             textAlignment="CENTER"
                             textFill="white"
                             alignment="CENTER_RIGHT"
@@ -174,12 +171,11 @@
                             minWidth="25.0"
                             prefWidth="25.0"
                             prefHeight="25.0"
-                            styleClass="class-figure-button"
+                            styleClass="cr-dep-arrow"
                     >
                     </Button>
 
                     <Button fx:id="aggregationArrow"
-                            text="A"
                             textAlignment="CENTER"
                             textFill="white"
                             alignment="CENTER_RIGHT"
@@ -187,7 +183,7 @@
                             minWidth="25.0"
                             prefWidth="25.0"
                             prefHeight="25.0"
-                            styleClass="class-figure-button"
+                            styleClass="cr-agg-arrow"
                     >
                     </Button>
 
