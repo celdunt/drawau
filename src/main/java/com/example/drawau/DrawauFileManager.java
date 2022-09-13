@@ -61,7 +61,7 @@ public class DrawauFileManager {
         }
     }
 
-    public static List<DrawauFigureClass> doMagic(Pane location) throws IOException {
+    public static List<DrawauFigureClass> doMagic(Pane location, boolean isAdvanced) throws IOException {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File file = directoryChooser.showDialog(null);
 
@@ -113,68 +113,73 @@ public class DrawauFileManager {
 
                         bReader.reset();
 
-                        /*while ((line = bReader.readLine()) != null) {
-                            if (line.contains("{")) openedBrace++;
-                            if (line.contains("}")) openedBrace--;
+                        if (isAdvanced == true) {
 
-                            if ((line.contains("=")
-                                || line.contains(";"))
-                                && (!line.contains("{")
-                                && !line.contains("}"))
-                                && openedBrace == 1) {
+                            while ((line = bReader.readLine()) != null) {
+                                if (line.contains("{")) openedBrace++;
+                                if (line.contains("}")) openedBrace--;
 
-                                splitLine = line.split(" ");
-                                DrawauFigureClass.FieldProperty fp = new DrawauFigureClass.FieldProperty("", "");
-                                for (int i = 0; i < splitLine.length; i++) {
-                                    if (splitLine[i].equals("=")) {
-                                        fp.setName(splitLine[i-1]);
-                                        fp.setType(splitLine[i-2]);
-                                        dfc.setFieldValue(fp);
-                                        break;
+                                if ((line.contains("=")
+                                        || line.contains(";"))
+                                        && (!line.contains("{")
+                                        && !line.contains("}"))
+                                        && openedBrace == 1) {
+
+                                    splitLine = line.split(" ");
+                                    DrawauFigureClass.FieldProperty fp = new DrawauFigureClass.FieldProperty("", "");
+                                    for (int i = 0; i < splitLine.length; i++) {
+                                        if (splitLine[i].equals("=")) {
+                                            fp.setName(splitLine[i - 1]);
+                                            fp.setType(splitLine[i - 2]);
+                                            dfc.setFieldValue(fp);
+                                            break;
+                                        }
+                                        if (splitLine[i].contains(";")) {
+                                            fp.setName(splitLine[i].replace(";", ""));
+                                            fp.setType(splitLine[i - 1]);
+                                            dfc.setFieldValue(fp);
+                                            break;
+                                        }
                                     }
-                                    if (splitLine[i].contains(";")) {
-                                        fp.setName(splitLine[i].replace(";", ""));
-                                        fp.setType(splitLine[i-1]);
-                                        dfc.setFieldValue(fp);
-                                        break;
+
+                                }
+
+                                if ((line.contains("(")
+                                        && line.contains(")")
+                                        && !line.contains("=")
+                                        && !line.contains(";")
+                                        && !line.contains("if")
+                                        && !line.contains("while")
+                                        && openedBrace <= 2)
+
+                                        || (line.contains("(")
+                                        && line.contains(")")
+                                        && line.contains("{")
+                                        && line.contains("}")
+                                        && openedBrace == 1)) {
+
+                                    splitLine = line.split(" ");
+                                    DrawauFigureClass.FieldProperty fp = new DrawauFigureClass.FieldProperty("", "");
+                                    for (int i = 0; i < splitLine.length; i++) {
+                                        if (splitLine[i].contains("(")) {
+
+                                            fp.setType(splitLine[i - 1]);
+                                            if (!splitLine[i].contains(")"))
+                                                fp.setName(splitLine[i] + ")");
+                                            else fp.setName(splitLine[i]);
+
+                                            dfc.setMethodValue(fp);
+
+                                            break;
+                                        }
                                     }
+
                                 }
 
                             }
 
-                            if ((line.contains("(")
-                                && line.contains(")")
-                                && !line.contains("=")
-                                && !line.contains(";")
-                                && !line.contains("if")
-                                && !line.contains("while")
-                                && openedBrace <= 2)
+                        }
 
-                                || (line.contains("(")
-                                && line.contains(")")
-                                && line.contains("{")
-                                && line.contains("}")
-                                && openedBrace == 1)) {
-
-                                splitLine = line.split(" ");
-                                DrawauFigureClass.FieldProperty fp = new DrawauFigureClass.FieldProperty("", "");
-                                for (int i = 0; i < splitLine.length; i++) {
-                                    if (splitLine[i].contains("(")) {
-
-                                        fp.setType(splitLine[i-1]);
-                                        if (!splitLine[i].contains(")"))
-                                            fp.setName(splitLine[i]+")");
-                                        else fp.setName(splitLine[i]);
-
-                                        dfc.setMethodValue(fp);
-
-                                        break;
-                                    }
-                                }
-
-                            }
-
-                        }*/
                         dfc.locate(location);
                         dfc.draw();
                         figures.add(dfc);

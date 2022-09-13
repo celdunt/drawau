@@ -10,8 +10,9 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Label?>
-<HBox fx:id="mainControl"
-      alignment="TOP_LEFT"
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
+<VBox fx:id="mainControl"
       prefHeight="450"
       prefWidth="800"
       stylesheets="@drawau-style.css"
@@ -19,193 +20,204 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.drawau.DrawauController"
 >
-<children>
-
-    <VBox alignment="CENTER_LEFT"
-          maxWidth="40.0"
-          minWidth="40.0"
-          prefHeight="450.0"
-          minHeight="450.0"
-          styleClass="side-panel"
+    <ToolBar fx:id="toolBar"
+             prefHeight="30.0"
+             minHeight="30.0"
+             styleClass="side-panel"
     >
-        <children>
+        <Button fx:id="newButton"
+                text="Создать"
+                textFill="transparent"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="new-button"
+        >
 
-            <Button fx:id="newButton"
-                    text="Создать"
-                    textFill="transparent"
-                    alignment="CENTER_RIGHT"
-                    minHeight="35.0"
-                    minWidth="35.0"
-                    prefWidth="35.0"
-                    prefHeight="35.0"
-                    styleClass="new-button"
-            >
+            <HBox.margin>
+                <Insets left="15"/>
+            </HBox.margin>
+        </Button>
 
-                <VBox.margin>
-                    <Insets left="2.5"/>
-                </VBox.margin>
-            </Button>
+        <Button fx:id="openButton"
+                text="Открыть"
+                textFill="transparent"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="openf-button"
+        >
 
-            <Button fx:id="openButton"
-                    text="Открыть"
-                    textFill="transparent"
-                    alignment="CENTER_RIGHT"
-                    minHeight="35.0"
-                    minWidth="35.0"
-                    prefWidth="35.0"
-                    prefHeight="35.0"
-                    styleClass="openf-button"
-            >
+            <HBox.margin>
+                <Insets left="5"/>
+            </HBox.margin>
+        </Button>
 
-                <VBox.margin>
-                    <Insets left="2.5" top="10.0"/>
-                </VBox.margin>
-            </Button>
+        <Button fx:id="saveButton"
+                text="Сохранить"
+                textFill="transparent"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="save-button"
+        >
 
-            <Button fx:id="saveButton"
-                    text="Сохранить"
-                    textFill="transparent"
-                    alignment="CENTER_RIGHT"
-                    minHeight="35.0"
-                    minWidth="35.0"
-                    prefWidth="35.0"
-                    prefHeight="35.0"
-                    styleClass="save-button"
-            >
+            <HBox.margin>
+                <Insets left="5"/>
+            </HBox.margin>
 
-                <VBox.margin>
-                    <Insets left="2.5" top="10.0"/>
-                </VBox.margin>
+        </Button>
 
-            </Button>
+        <Button fx:id="magicButton"
+                text="Магия"
+                textFill="transparent"
+                alignment="CENTER_RIGHT"
+                minHeight="0.0"
+                minWidth="0.0"
+                prefWidth="0.0"
+                prefHeight="0.0"
+                visible="false"
+                styleClass="magic-button"
+        >
+        </Button>
 
-            <Button fx:id="magicButton"
-                    text="Магия"
-                    textFill="transparent"
-                    alignment="CENTER_RIGHT"
-                    minHeight="35.0"
-                    minWidth="35.0"
-                    prefWidth="35.0"
-                    prefHeight="35.0"
-                    styleClass="magic-button"
-            >
+        <Button fx:id="figuresButton"
+                text="Фигуры"
+                textFill="transparent"
+                alignment="CENTER_RIGHT"
+                minHeight="0.0"
+                minWidth="0.0"
+                prefWidth="0.0"
+                prefHeight="0.0"
+                visible="false"
+                styleClass="figures-button"
+        >
+        </Button>
 
-                <VBox.margin>
-                    <Insets left="2.5" top="10.0"/>
-                </VBox.margin>
+        <Separator/>
 
-            </Button>
+        <Button fx:id="classFigure"
+                text="Класс"
+                textAlignment="CENTER"
+                textFill="white"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="cr-figure"
+        >
+            <HBox.margin>
+                <Insets left="5"/>
+            </HBox.margin>
+        </Button>
 
-            <Button fx:id="figuresButton"
-                    text="Фигуры"
-                    textFill="transparent"
-                    alignment="CENTER_RIGHT"
-                    minHeight="35.0"
-                    minWidth="35.0"
-                    prefWidth="35.0"
-                    prefHeight="35.0"
-                    styleClass="figures-button"
-            >
+        <Button fx:id="inheritArrow"
+                text="Наследование"
+                textAlignment="CENTER"
+                textFill="white"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="cr-inh-arrow"
+        >
+            <HBox.margin>
+                <Insets left="5"/>
+            </HBox.margin>
+        </Button>
 
-                <VBox.margin>
-                    <Insets left="2.5" top="10.0"/>
-                </VBox.margin>
+        <Button fx:id="dependenceArrow"
+                text="Зависимость"
+                textAlignment="CENTER"
+                textFill="white"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="cr-dep-arrow"
+        >
+            <HBox.margin>
+                <Insets left="5"/>
+            </HBox.margin>
+        </Button>
 
-            </Button>
+        <Button fx:id="aggregationArrow"
+                text="Агрегация"
+                textAlignment="CENTER"
+                textFill="white"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="cr-agg-arrow"
+        >
+            <HBox.margin>
+                <Insets left="5"/>
+            </HBox.margin>
+        </Button>
 
-        </children>
-    </VBox>
+        <Button fx:id="deleteFigureButton"
+                text="Удалить"
+                textAlignment="CENTER"
+                textFill="white"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="del-button"/>
+
+    </ToolBar>
 
     <Pane fx:id="workSpace"
           prefWidth="760"
           prefHeight="450"
     >
-        <children>
-
-            <FlowPane fx:id="figuresPanel"
-                      prefWidth="100.0"
-                      prefHeight="100.0"
-                      maxHeight="100.0"
-                      prefWrapLength="100.0"
-                      styleClass="flow-pane-figures"
-                      hgap="5"
-                      vgap="5"
-                      visible="false"
-            >
-
-                <padding>
-                    <Insets top="5.0" left="5.0" right="5.0" bottom="5.0"/>
-                </padding>
-
-                <children>
-
-                    <Button fx:id="classFigure"
-                            textAlignment="CENTER"
-                            textFill="white"
-                            alignment="CENTER_RIGHT"
-                            minHeight="25.0"
-                            minWidth="25.0"
-                            prefWidth="25.0"
-                            prefHeight="25.0"
-                            styleClass="cr-figure"
-                    >
-                    </Button>
-
-                    <Button fx:id="inheritArrow"
-                            textAlignment="CENTER"
-                            textFill="white"
-                            alignment="CENTER_RIGHT"
-                            minHeight="25.0"
-                            minWidth="25.0"
-                            prefWidth="25.0"
-                            prefHeight="25.0"
-                            styleClass="cr-inh-arrow"
-                    >
-                    </Button>
-
-                    <Button fx:id="dependenceArrow"
-                            textAlignment="CENTER"
-                            textFill="white"
-                            alignment="CENTER_RIGHT"
-                            minHeight="25.0"
-                            minWidth="25.0"
-                            prefWidth="25.0"
-                            prefHeight="25.0"
-                            styleClass="cr-dep-arrow"
-                    >
-                    </Button>
-
-                    <Button fx:id="aggregationArrow"
-                            textAlignment="CENTER"
-                            textFill="white"
-                            alignment="CENTER_RIGHT"
-                            minHeight="25.0"
-                            minWidth="25.0"
-                            prefWidth="25.0"
-                            prefHeight="25.0"
-                            styleClass="cr-agg-arrow"
-                    >
-                    </Button>
-
-                </children>
-            </FlowPane>
-
-            <VBox fx:id="classFigurePanel"
-                  prefHeight="200"
-                  prefWidth="250"
-                  style="-fx-background-color: #635380;"
-                  layoutX="150"
-                  layoutY="200"
-                  alignment="TOP_CENTER"
+        <FlowPane fx:id="figuresPanel"
+                  prefWidth="100.0"
+                  prefHeight="100.0"
+                  maxHeight="100.0"
+                  prefWrapLength="100.0"
+                  styleClass="flow-pane-figures"
+                  hgap="5"
+                  vgap="5"
                   visible="false"
-            />
+        >
 
-            <Label fx:id="subscribeArrowStatus"
-                   text=""
-                   layoutX="5"/>
+            <padding>
+                <Insets top="5.0" left="5.0" right="5.0" bottom="5.0"/>
+            </padding>
 
-        </children>
+            <children>
+
+
+            </children>
+        </FlowPane>
+
+        <VBox fx:id="classFigurePanel"
+              prefHeight="200"
+              prefWidth="250"
+              style="-fx-background-color: #635380;"
+              layoutX="250"
+              layoutY="100"
+              alignment="TOP_CENTER"
+              visible="false"
+        />
+
+        <Label fx:id="subscribeArrowStatus"
+               text=""
+               layoutX="5"/>
+
     </Pane>
 
-</children>
-</HBox>
+</VBox>

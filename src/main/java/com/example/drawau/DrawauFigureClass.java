@@ -10,11 +10,15 @@ import javafx.scene.text.Text;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class DrawauFigureClass implements DrawauIFigure {
+public class DrawauFigureClass implements DrawauIFigure, DrawauIObservable
+{
 
-    public static class FieldProperty implements Serializable {
-        public FieldProperty(String vname, String vtype) {
+    public static class FieldProperty implements Serializable
+    {
+        public FieldProperty(String vname, String vtype)
+        {
             name = vname;
             type = vtype;
         }
@@ -22,13 +26,26 @@ public class DrawauFigureClass implements DrawauIFigure {
         private String name;
         private String type;
 
-        public void setName(String value) {name = value;}
-        public String getName() {return name;}
+        public void setName(String value)
+        {
+            name = value;
+        }
 
-        public void setType(String value) {type = value;}
-        public String getType() {return type;}
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setType(String value)
+        {
+            type = value;
+        }
+
+        public String getType()
+        {
+            return type;
+        }
     }
-
 
     public static final String TYPE_ABSTRACT = "abstract class";
     public static final String TYPE_SIMPLE = "class";
@@ -36,6 +53,7 @@ public class DrawauFigureClass implements DrawauIFigure {
 
     public static final String SUBSCRIBE_IN = "sub in";
     public static final String SUBSCRIBE_OUT = "sub out";
+    public static final String DELETE = "delete";
 
     private String parent = "";
 
@@ -44,21 +62,21 @@ public class DrawauFigureClass implements DrawauIFigure {
     private List<FieldProperty> fields = new ArrayList<>();
     private List<FieldProperty> methods = new ArrayList<>();
 
-    private List<DrawauArrow> subscribersIn = new ArrayList<>();
-    private List<DrawauArrow> subscribersOut = new ArrayList<>();
+    private final List<DrawauArrow> subscribersIn = new ArrayList<>();
+    private final List<DrawauArrow> subscribersOut = new ArrayList<>();
 
     private double layoutX;
     private double layoutY;
 
     transient private VBox container = new VBox();
 
-
     double pressContainerX = 0;
     double pressContainerY = 0;
 
+    transient Pane linkWorkSpace;
 
-
-    public DrawauFigureClass(DrawauFigureClassBuilder builder) {
+    public DrawauFigureClass(DrawauFigureClassBuilder builder)
+    {
         container.alignmentProperty().set(Pos.TOP_CENTER);
         container.setPrefSize(builder.width, builder.height);
         container.setStyle(builder.style);
@@ -76,64 +94,131 @@ public class DrawauFigureClass implements DrawauIFigure {
     }
 
 
+    public List<DrawauArrow> getSubscribersIn()
+    {
+        return subscribersIn;
+    }
 
-    public List<DrawauArrow> getSubscribersIn() { return subscribersIn; }
-    public List<DrawauArrow> getSubscribersOut() { return subscribersOut; }
+    public List<DrawauArrow> getSubscribersOut()
+    {
+        return subscribersOut;
+    }
 
-    public DrawauArrow lastSubscribeOut() {
+    public DrawauArrow lastSubscribeOut()
+    {
         if (subscribersOut.size() > 0)
-        return subscribersOut.get(subscribersOut.size()-1);
+            return subscribersOut.get(subscribersOut.size() - 1);
         else return new DrawauInheritArrow();
     }
-    public DrawauArrow lastSubscribeIn() {
+
+    public DrawauArrow lastSubscribeIn()
+    {
         if (subscribersIn.size() > 0)
-        return subscribersIn.get(subscribersIn.size()-1);
+            return subscribersIn.get(subscribersIn.size() - 1);
         else return new DrawauInheritArrow();
     }
 
-    public void setParent(String value) { parent = value; }
-    public String getParent() { return parent; }
+    public void setParent(String value)
+    {
+        parent = value;
+    }
 
-    public void setType(String value) { type = value; }
-    public String getType() { return type; }
+    public String getParent()
+    {
+        return parent;
+    }
 
-    public void setName(String value) { name = value; }
-    public String getName() { return name; }
+    public void setType(String value)
+    {
+        type = value;
+    }
 
-    public void setFieldValue(FieldProperty value) {
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setName(String value)
+    {
+        name = value;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setFieldValue(FieldProperty value)
+    {
         fields.add(value);
     }
 
-    public void setMethodValue(FieldProperty value) {
+    public void setMethodValue(FieldProperty value)
+    {
         methods.add(value);
     }
-    public List<FieldProperty> getFields() { return fields; }
 
-    public List<FieldProperty> getMethods() { return methods; }
+    public List<FieldProperty> getFields()
+    {
+        return fields;
+    }
 
-    public void setSize(double hvalue, double vvalue) { container.setPrefSize(hvalue, vvalue); }
-    public void setStyle(String value) { container.setStyle(value); }
-    //public double getWidth() { return container.getWidth()>0?container.getWidth():container.getPrefWidth(); }
-    public double getWidth() { return container.getPrefWidth(); }
-    public double getHeight() { return container.getHeight()>0?container.getHeight():container.getPrefHeight(); }
-    public void setLayoutX(double value) {
+    public List<FieldProperty> getMethods()
+    {
+        return methods;
+    }
+
+    public void setSize(double hvalue, double vvalue)
+    {
+        container.setPrefSize(hvalue, vvalue);
+    }
+
+    public void setStyle(String value)
+    {
+        container.setStyle(value);
+    }
+
+    public double getWidth()
+    {
+        return container.getPrefWidth();
+    }
+
+    public double getHeight()
+    {
+        return container.getHeight() > 0 ? container.getHeight() : container.getPrefHeight();
+    }
+
+    public void setLayoutX(double value)
+    {
         layoutX = value;
         container.setLayoutX(layoutX);
     }
-    public void setLayoutY(double value) {
+
+    public void setLayoutY(double value)
+    {
         layoutY = value;
         container.setLayoutY(layoutY);
     }
-    public double getLayoutX() { return layoutX; }
-    public double getLayoutY() { return layoutY; }
 
-    public static String setMargin(String marginValue) {
+    public double getLayoutX()
+    {
+        return layoutX;
+    }
+
+    public double getLayoutY()
+    {
+        return layoutY;
+    }
+
+    public static String setMargin(String marginValue)
+    {
         return "-fx-padding: " + marginValue +
                 "; -fx-border-insets: " + marginValue +
                 "; -fx-background-insets: " + marginValue + ";";
     }
 
-    public void initialize() {
+    public void initialize()
+    {
         container = new VBox();
 
         container.alignmentProperty().set(Pos.TOP_CENTER);
@@ -146,48 +231,88 @@ public class DrawauFigureClass implements DrawauIFigure {
         addClickAction();
     }
 
-    private void addDragAction() {
-        container.onMousePressedProperty().set(action -> {
+    private void addDragAction()
+    {
+        container.onMousePressedProperty().set(action ->
+        {
             pressContainerX = action.getX();
             pressContainerY = action.getY();
         });
-        container.setOnMouseDragged(action -> {
-            layoutX = action.getSceneX() - pressContainerX - DrawauController.SIDE_PANEL_WIDTH;
+        container.setOnMouseDragged(action ->
+        {
+            layoutX = action.getSceneX() - pressContainerX;
             container.setLayoutX(layoutX);
-            layoutY = action.getSceneY() - pressContainerY;
+            layoutY = action.getSceneY() - pressContainerY - DrawauController.SIDE_PANEL_WIDTH;
             container.setLayoutY(layoutY);
 
             notifySubscribers();
         });
     }
 
-    public void notifySubscribers() {
+    @Override
+    public void notifySubscribers()
+    {
         for (DrawauArrow arrow : subscribersIn)
-            arrow.notifyAction(arrow.getStartX(), arrow.getStartY(),
-                    container.getLayoutX()  + arrow.getEndSelfPosX(), container.getLayoutY());
+            arrow.update(arrow.getStartX(), arrow.getStartY(),
+                    container.getLayoutX() + arrow.getEndSelfPosX(), container.getLayoutY());
 
         for (DrawauArrow arrow : subscribersOut)
-            arrow.notifyAction(container.getLayoutX() + arrow.getStartSelfPosX(), container.getLayoutY(),
+            arrow.update(container.getLayoutX() + arrow.getStartSelfPosX(), container.getLayoutY(),
                     arrow.getEndX(), arrow.getEndY());
     }
 
-    private void addClickAction() {
-        container.onMouseClickedProperty().set(action -> {
-            if (DrawauController.arrows.stream().count() != 0 && DrawauController.ACTION != "null") {
-                subscribe(DrawauController.arrows.get((int)DrawauController.arrows.stream().count()-1),
-                        action.getX(), DrawauController.ACTION);
+    private void addClickAction()
+    {
+        container.onMouseClickedProperty().set(action ->
+        {
+            if (DrawauController.ACTION.equals(DELETE))
+            {
+                if (linkWorkSpace != null)
+                {
+                    linkWorkSpace.getChildren().remove(container);
+
+                    for(DrawauArrow arrow : subscribersIn) {
+
+                        linkWorkSpace.getChildren().remove(arrow.getG());
+                    }
+
+                    for(DrawauArrow arrow : subscribersOut) {
+                        linkWorkSpace.getChildren().remove(arrow.getG());
+                    }
+
+                    DrawauController.subscribeStatusText.setValue("");
+                }
+
+                DrawauController.ACTION = "null";
+            }
+            if ((long) DrawauController.arrows.size() != 0 && !Objects.equals(DrawauController.ACTION, "null"))
+            {
+                double selfValue;
+                if (action.getX() >= container.getPrefWidth() - 20
+                        || action.getX() <= 20)
+                    selfValue = action.getY();
+                else selfValue = action.getX();
+
+                subscribe(DrawauController.arrows.get(DrawauController.arrows.size() - 1),
+                        selfValue, DrawauController.ACTION);
             }
         });
     }
 
-    public void subscribe(DrawauArrow sub, double selfX, String mode) {
-        switch (mode) {
+    @Override
+    public void subscribe(DrawauArrow sub, double selfX, String mode)
+    {
+        switch (mode)
+        {
             case SUBSCRIBE_IN -> {
                 sub.setEndX(container.getLayoutX() + selfX);
                 sub.setEndSelfPosX(selfX);
                 if (container.getHeight() > 1)
                     sub.setEndHeightContainer(container.getHeight());
                 else sub.setEndHeightContainer(container.getPrefHeight());
+                if (container.getWidth() > 1)
+                    sub.setEndWidthContainer(container.getWidth());
+                else sub.setEndWidthContainer(container.getPrefWidth());
                 sub.setEndY(container.getLayoutY());
                 subscribersIn.add(sub);
                 sub.draw();
@@ -202,6 +327,9 @@ public class DrawauFigureClass implements DrawauIFigure {
                 if (container.getHeight() > 1)
                     sub.setStartHeightContainer(container.getHeight());
                 else sub.setStartHeightContainer(container.getPrefHeight());
+                if (container.getWidth() > 1)
+                    sub.setStartWidthContainer(container.getWidth());
+                else sub.setStartWidthContainer(container.getPrefWidth());
                 sub.setStartY(container.getLayoutY());
                 subscribersOut.add(sub);
 
@@ -213,12 +341,15 @@ public class DrawauFigureClass implements DrawauIFigure {
     }
 
     @Override
-    public void locate(Pane location) {
+    public void locate(Pane location)
+    {
+        linkWorkSpace = location;
         location.getChildren().add(container);
     }
 
     @Override
-    public void draw() {
+    public void draw()
+    {
         container.getChildren().clear();
         //Header-part
         HBox header_part = new HBox();
@@ -236,7 +367,8 @@ public class DrawauFigureClass implements DrawauIFigure {
         container.getChildren().add(header_part);
 
         //Middle-part
-        for (FieldProperty field : fields) {
+        for (FieldProperty field : fields)
+        {
             HBox middle_part = new HBox();
             middle_part.setAlignment(Pos.BASELINE_CENTER);
 
@@ -252,10 +384,11 @@ public class DrawauFigureClass implements DrawauIFigure {
             container.getChildren().add(middle_part);
         }
 
-        container.getChildren().get((int)container.getChildren().stream().count()-1).setStyle(setMargin("0 0 10 0"));
+        container.getChildren().get((int) container.getChildren().stream().count() - 1).setStyle(setMargin("0 0 10 0"));
 
         //Bottom-part
-        for (FieldProperty method : methods) {
+        for (FieldProperty method : methods)
+        {
             HBox bottom_part = new HBox();
             bottom_part.setAlignment(Pos.BASELINE_CENTER);
 

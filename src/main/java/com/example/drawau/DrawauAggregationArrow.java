@@ -6,20 +6,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 
-public class DrawauAggregationArrow extends DrawauArrow {
+public class DrawauAggregationArrow extends DrawauArrow
+{
     @Override
-    public void locate(Pane location) {
+    public void locate(Pane location)
+    {
+        linkWorkSpace = location;
         location.getChildren().add(G);
     }
 
     @Override
-    public void draw() {
+    public void draw()
+    {
         G.getChildren().clear();
 
         Polygon PL = new Polygon();
         Line line = new Line();
 
-        if (startY < endY) {
+        if (endY - startY > conditionChangePosition)
+        {
             double sY = startY + startHeightContainer;
 
             line.setStartX(startX);
@@ -35,7 +40,9 @@ public class DrawauAggregationArrow extends DrawauArrow {
             );
             PL.setFill(Color.BLACK);
             PL.setStroke(Color.BLACK);
-        } else if (startY > endY) {
+        }
+        else if (startY - endY > conditionChangePosition)
+        {
             double eY = endY + endHeightContainer;
 
             PL.getPoints().addAll(
@@ -51,6 +58,48 @@ public class DrawauAggregationArrow extends DrawauArrow {
             line.setStartY(startY);
             line.setEndX(endX);
             line.setEndY(eY + 10);
+        }
+        else if (startX < endX)
+        {
+            double sX = startX + startWidthContainer - startSelfPosX;
+            double eX = endX - endSelfPosX;
+            double sY = startY + startSelfPosX;
+            double eY = endY + endSelfPosX;
+
+            line.setStartX(sX);
+            line.setStartY(sY);
+            line.setEndX(eX - 10);
+            line.setEndY(eY);
+
+            PL.getPoints().addAll(
+                    eX - 10, eY,
+                    eX - 5, eY - 2.5,
+                    eX, eY,
+                    eX - 5, eY + 2.5
+            );
+            PL.setFill(Color.BLACK);
+            PL.setStroke(Color.BLACK);
+        }
+        else if (endX < startX)
+        {
+            double sX = startX - startSelfPosX;
+            double eX = endX + endWidthContainer - endSelfPosX;
+            double sY = startY + startSelfPosX;
+            double eY = endY + endSelfPosX;
+
+            PL.getPoints().addAll(
+                    eX + 10, eY,
+                    eX + 5, eY - 2.5,
+                    eX, eY,
+                    eX + 5, eY + 2.5
+            );
+            PL.setFill(Color.BLACK);
+            PL.setStroke(Color.BLACK);
+
+            line.setStartX(sX);
+            line.setStartY(sY);
+            line.setEndX(eX + 10);
+            line.setEndY(eY);
         }
 
         G.getChildren().addAll(PL, line);

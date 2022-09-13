@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DrawauController {
+public class DrawauController
+{
 
     public Button figuresButton;
     public Button magicButton;
@@ -33,10 +34,10 @@ public class DrawauController {
     public FlowPane figuresPanel;
     public Pane workSpace;
     public VBox classFigurePanel;
-    public HBox mainControl;
+    public VBox mainControl;
 
 
-    public static final double SIDE_PANEL_WIDTH = 40;
+    public static final double SIDE_PANEL_WIDTH = 30;
 
     public ChoiceBox<String> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(
             DrawauFigureClass.TYPE_INTERFACE,
@@ -47,6 +48,8 @@ public class DrawauController {
     public List<DrawauFigureClass.FieldProperty> methods = new ArrayList<>();
 
     public Label subscribeArrowStatus;
+    public ToolBar toolBar;
+    public Button deleteFigureButton;
 
 
     List<DrawauFigureClass> figures = new ArrayList<>();
@@ -56,7 +59,8 @@ public class DrawauController {
     public static StringProperty subscribeStatusText = new SimpleStringProperty();
 
 
-    public void initialize() {
+    public void initialize()
+    {
         bindSubscribeStatusLabel();
 
         setNewButtonBehavior();
@@ -76,14 +80,28 @@ public class DrawauController {
         addAnimationsForButtons();
 
         setClassFigureButtonBehavior();
+
+        setDeleteFigureButtonBehavior();
     }
 
-    public void bindSubscribeStatusLabel() {
+    public void setDeleteFigureButtonBehavior()
+    {
+        deleteFigureButton.setOnAction(action ->
+        {
+            ACTION = DrawauFigureClass.DELETE;
+            subscribeArrowStatus.setText("Процесс удаления фигуры");
+        });
+    }
+
+    public void bindSubscribeStatusLabel()
+    {
         subscribeStatusText.bindBidirectional(subscribeArrowStatus.textProperty());
     }
 
-    public void setNewButtonBehavior() {
-        newButton.setOnAction(action -> {
+    public void setNewButtonBehavior()
+    {
+        newButton.setOnAction(action ->
+        {
             workSpace.getChildren().clear();
             workSpace.getChildren().addAll(
                     classFigurePanel,
@@ -92,8 +110,10 @@ public class DrawauController {
         });
     }
 
-    public void setOpenButtonBehavior() {
-        openButton.setOnAction(action -> {
+    public void setOpenButtonBehavior()
+    {
+        openButton.setOnAction(action ->
+        {
             FileChooser fileChooser = new FileChooser();
 
             fileChooser.getExtensionFilters().add(
@@ -106,8 +126,10 @@ public class DrawauController {
         });
     }
 
-    public void setSaveButtonBehavior() {
-        saveButton.setOnAction(action -> {
+    public void setSaveButtonBehavior()
+    {
+        saveButton.setOnAction(action ->
+        {
             FileChooser fileChooser = new FileChooser();
 
             fileChooser.getExtensionFilters().addAll(
@@ -116,7 +138,8 @@ public class DrawauController {
 
             File file = fileChooser.showSaveDialog(null);
 
-            if (file != null) {
+            if (file != null)
+            {
                 if (file.getName().endsWith(".png"))
                     DrawauFileManager.saveImageFile(workSpace, file);
                 else if (file.getName().endsWith(".drawau"))
@@ -125,38 +148,49 @@ public class DrawauController {
         });
     }
 
-    public void setMagicButtonBehavior() {
-        magicButton.setOnAction(action -> {
-            try {
-                figures = DrawauFileManager.doMagic(workSpace);
-            } catch (IOException e) {
+    public void setMagicButtonBehavior()
+    {
+        magicButton.setOnAction(action ->
+        {
+            try
+            {
+                figures = DrawauFileManager.doMagic(workSpace, false);
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         });
     }
 
-    public void setArrowButtonBehavior() {
-        inheritArrow.setOnAction(action -> {
+    public void setArrowButtonBehavior()
+    {
+        inheritArrow.setOnAction(action ->
+        {
             DrawauInheritArrow ar = new DrawauInheritArrow();
             ar.locate(workSpace);
+            ar.setCastType(DrawauInheritArrow.class);
             DrawauController.arrows.add(ar);
             ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
 
             subscribeStatusText.setValue("Отметьте начальную точку");
         });
 
-        dependenceArrow.setOnAction(action -> {
+        dependenceArrow.setOnAction(action ->
+        {
             DrawauDependenceArrow ar = new DrawauDependenceArrow();
             ar.locate(workSpace);
+            ar.setCastType(DrawauDependenceArrow.class);
             DrawauController.arrows.add(ar);
             ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
 
             subscribeStatusText.setValue("Отметьте начальную точку");
         });
 
-        aggregationArrow.setOnAction(action -> {
+        aggregationArrow.setOnAction(action ->
+        {
             DrawauAggregationArrow ar = new DrawauAggregationArrow();
             ar.locate(workSpace);
+            ar.setCastType(DrawauAggregationArrow.class);
             DrawauController.arrows.add(ar);
             ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
 
@@ -164,37 +198,49 @@ public class DrawauController {
         });
     }
 
-    public void setClassFigurePanelBehavior() {
+    public void setClassFigurePanelBehavior()
+    {
         AtomicReference<Double> pressContainerX = new AtomicReference<>((double) 0);
         AtomicReference<Double> pressContainerY = new AtomicReference<>((double) 0);
-        classFigurePanel.onMousePressedProperty().set(action -> {
+        classFigurePanel.onMousePressedProperty().set(action ->
+        {
             pressContainerX.set(action.getX());
             pressContainerY.set(action.getY());
         });
-        classFigurePanel.setOnMouseDragged(action -> {
-            classFigurePanel.setLayoutX(action.getSceneX() - pressContainerX.get() - DrawauController.SIDE_PANEL_WIDTH);
-            classFigurePanel.setLayoutY(action.getSceneY() - pressContainerY.get());
+        classFigurePanel.setOnMouseDragged(action ->
+        {
+            classFigurePanel.setLayoutX(action.getSceneX() - pressContainerX.get());
+            classFigurePanel.setLayoutY(action.getSceneY() - pressContainerY.get() - DrawauController.SIDE_PANEL_WIDTH);
         });
     }
 
-    public void addAnimationsForButtons() {
+    public void addAnimationsForButtons()
+    {
         DrawauAnimation.setButtonWidthAnimation(
                 newButton,
                 openButton,
                 saveButton,
                 magicButton,
-                figuresButton
+                figuresButton,
+                classFigure,
+                inheritArrow,
+                dependenceArrow,
+                aggregationArrow,
+                deleteFigureButton
         );
         DrawauAnimation.setClickFiguresButtonAnimation(figuresButton, figuresPanel);
     }
 
-    public void setClassFigureButtonBehavior() {
-        classFigure.setOnAction(action -> {
+    public void setClassFigureButtonBehavior()
+    {
+        classFigure.setOnAction(action ->
+        {
             classFigurePanel.setVisible(true);
         });
     }
 
-    private void addClassFigurePanelContent(VBox classFigurePanel) {
+    private void addClassFigurePanelContent(VBox classFigurePanel)
+    {
         classFigurePanel.toFront();
 
         HBox head = new HBox();
@@ -232,11 +278,13 @@ public class DrawauController {
         addMethodBox.setMaxSize(150, 40);
         addMethodBox.setPrefSize(150, 40);
 
-        addFieldBox.setOnAction(action -> {
+        addFieldBox.setOnAction(action ->
+        {
             verticalFieldBox.getChildren().add(addFieldBox(fields));
         });
 
-        addMethodBox.setOnAction(action -> {
+        addMethodBox.setOnAction(action ->
+        {
             verticalMethodBox.getChildren().add(addFieldBox(methods));
         });
 
@@ -245,7 +293,6 @@ public class DrawauController {
 
         classFigurePanel.getChildren().add(verticalMethodBox);
         classFigurePanel.getChildren().add(addMethodBox);
-
 
 
         verticalFieldBox.getChildren().add(addFieldBox(fields));
@@ -260,13 +307,16 @@ public class DrawauController {
 
         acceptButton.setStyle(DrawauFigureClass.setMargin("5 0 5 0"));
 
-        acceptButton.setOnAction(action -> {
+        acceptButton.setOnAction(action ->
+        {
             DrawauFigureClass f1 =
                     new DrawauFigureClassBuilder()
                             .addName(nameBox.getText())
                             .addType(choiceBox.getValue())
                             .addFields(fields)
                             .addMethods(methods)
+                            .addLayoutX(10)
+                            .addLayoutY(10)
                             .build();
             f1.locate(workSpace);
             f1.draw();
@@ -283,7 +333,8 @@ public class DrawauController {
         classFigurePanel.getChildren().add(acceptButton);
     }
 
-    private HBox addFieldBox(List<DrawauFigureClass.FieldProperty> fields) {
+    private HBox addFieldBox(List<DrawauFigureClass.FieldProperty> fields)
+    {
         HBox fieldBox = new HBox();
         fieldBox.setAlignment(Pos.CENTER);
         fieldBox.setStyle(DrawauFigureClass.setMargin("10 0 0 0"));
@@ -305,10 +356,12 @@ public class DrawauController {
         fieldType.setPromptText("Тип");
 
 
-        fieldName.textProperty().addListener(change -> {
+        fieldName.textProperty().addListener(change ->
+        {
             field.setName(fieldName.getText());
         });
-        fieldType.textProperty().addListener(change -> {
+        fieldType.textProperty().addListener(change ->
+        {
             field.setType(fieldType.getText());
         });
 

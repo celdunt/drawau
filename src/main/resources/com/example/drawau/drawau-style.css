@@ -17,7 +17,7 @@
     -fx-border-radius: 25px;
     -fx-background-color: #59336A;
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 35px 35px;
+    -fx-background-size: 25px 25px;
     -fx-font-weight: 700;
 }
 
@@ -36,12 +36,18 @@
 .figures-button {
     -fx-background-image: url('images/figures.png');
 }
-.class-figure-button, .cr-figure, .cr-inh-arrow, .cr-dep-arrow, .cr-agg-arrow {
+
+.class-figure-button, .cr-figure, .cr-inh-arrow, .cr-dep-arrow, .cr-agg-arrow, .del-button {
     -fx-background-radius: 25px;
     -fx-border-radius: 25px;
     -fx-background-color: #59336A;
     -fx-background-size: 25px 25px;
+    -fx-background-repeat: no-repeat;
     -fx-font-weight: 700;
+}
+
+.del-button {
+    -fx-background-image: url('images/figures-out.png');
 }
 
 .cr-figure {
