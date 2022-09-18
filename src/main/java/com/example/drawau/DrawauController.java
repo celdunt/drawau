@@ -105,7 +105,8 @@ public class DrawauController
             workSpace.getChildren().clear();
             workSpace.getChildren().addAll(
                     classFigurePanel,
-                    figuresPanel
+                    figuresPanel,
+                    subscribeArrowStatus
             );
         });
     }

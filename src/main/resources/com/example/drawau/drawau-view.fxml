@@ -74,18 +74,6 @@
 
         </Button>
 
-        <Button fx:id="magicButton"
-                text="Магия"
-                textFill="transparent"
-                alignment="CENTER_RIGHT"
-                minHeight="0.0"
-                minWidth="0.0"
-                prefWidth="0.0"
-                prefHeight="0.0"
-                visible="false"
-                styleClass="magic-button"
-        >
-        </Button>
 
         <Button fx:id="figuresButton"
                 text="Фигуры"
@@ -97,6 +85,18 @@
                 prefHeight="0.0"
                 visible="false"
                 styleClass="figures-button"
+        >
+        </Button>
+
+        <Button fx:id="magicButton"
+                text="Магия"
+                textFill="transparent"
+                alignment="CENTER_RIGHT"
+                minHeight="25.0"
+                minWidth="25.0"
+                prefWidth="25.0"
+                prefHeight="25.0"
+                styleClass="magic-button"
         >
         </Button>
 
