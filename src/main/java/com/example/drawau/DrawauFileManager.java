@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class DrawauFileManager
@@ -86,8 +86,7 @@ public class DrawauFileManager
 
         List<Path> classes =
                 Files.walk(Paths.get(file.getPath()))
-                        .filter(Files::isRegularFile)
-                        .collect(Collectors.toList());
+                        .filter(Files::isRegularFile).toList();
 
         List<DrawauFigureClass> figures = new ArrayList<>();
         List<DrawauArrow> arrows = new ArrayList<>();
@@ -101,7 +100,6 @@ public class DrawauFileManager
                 String readLine = "";
 
                 int openedBrace = 0;
-
 
                 bReader.mark(9999);
 
@@ -134,7 +132,7 @@ public class DrawauFileManager
 
                         bReader.reset();
 
-                        if (isAdvanced == true)
+                        if (isAdvanced)
                         {
 
                             while ((line = bReader.readLine()) != null)
@@ -241,16 +239,22 @@ public class DrawauFileManager
                         DrawauController.ACTION = DrawauFigureClass.SUBSCRIBE_OUT;
                     }
 
-                    figures.get(j).subscribe(DrawauController.arrows.get((int) DrawauController.arrows.stream().count() - 1),
-                            figures.get(j).getWidth() / 2, DrawauController.ACTION);
-                    DrawauController.ACTION = DrawauFigureClass.SUBSCRIBE_IN;
-                    figures.get(i).subscribe(DrawauController.arrows.get((int) DrawauController.arrows.stream().count() - 1),
-                            figures.get(i).getWidth() / 2, DrawauController.ACTION);
-                    DrawauController.ACTION = "null";
-
                     figures.get(j).draw();
                     figures.get(i).draw();
-                    DrawauController.arrows.get((int) DrawauController.arrows.stream().count() - 1).draw();
+
+
+                    figures.get(j).subscribe(DrawauController.arrows.get(DrawauController.arrows.size() - 1),
+                            figures.get(j).getWidth()/2, DrawauController.ACTION);
+
+                    DrawauController.ACTION = DrawauFigureClass.SUBSCRIBE_IN;
+
+                    figures.get(i).subscribe(DrawauController.arrows.get(DrawauController.arrows.size() - 1),
+                            figures.get(i).getWidth()/2, DrawauController.ACTION);
+
+                    DrawauController.ACTION = "null";
+
+                    DrawauController.arrows.get(DrawauController.arrows.size() - 1).draw();
+
                 }
             }
         }
@@ -280,46 +284,45 @@ public class DrawauFileManager
             }
         }
 
-        for (int i = 0; i < figures.size(); i++)
+        for (DrawauFigureClass figure : figures)
         {
-            if (figures.get(i).getSubscribersIn().size() > 0
-                    && figures.get(i).getSubscribersOut().size() == 0)
+            if (figure.getSubscribersIn().size() > 0
+                    && figure.getSubscribersOut().size() == 0)
             {
-                figures.get(i).setLayoutX(kingX);
-                figures.get(i).setLayoutY(kingY);
-                kingX += figures.get(i).getWidth() + 100;
-                if (kingX > 900)
+                figure.setLayoutX(kingX);
+                figure.setLayoutY(kingY);
+                kingX += figure.getWidth() + 150;
+                if (kingX > 1100)
                 {
                     kingX = 100;
                     kingY += 130;
                 }
             }
-            if (figures.get(i).getSubscribersIn().size() > 0
-                    && figures.get(i).getSubscribersOut().size() > 0)
+            if (figure.getSubscribersIn().size() > 0
+                    && figure.getSubscribersOut().size() > 0)
             {
-                figures.get(i).setLayoutX(knightX);
-                figures.get(i).setLayoutY(knightY);
-                knightX += figures.get(i).getWidth() + 100;
-                if (knightX > 900)
+                figure.setLayoutX(knightX);
+                figure.setLayoutY(knightY);
+                knightX += figure.getWidth() + 150;
+                if (knightX > 1100)
                 {
                     knightX = 100;
                     knightY += 130;
                 }
             }
-            if (figures.get(i).getSubscribersIn().size() == 0
-                    && figures.get(i).getSubscribersOut().size() >= 0)
+            if (figure.getSubscribersIn().size() == 0)
             {
-                figures.get(i).setLayoutX(servantX);
-                figures.get(i).setLayoutY(servantY);
-                servantX += figures.get(i).getWidth() + 100;
-                if (servantX > 900)
+                figure.setLayoutX(servantX);
+                figure.setLayoutY(servantY);
+                servantX += figure.getWidth() + 150;
+                if (servantX > 1100)
                 {
                     servantX = 10;
                     servantY += 130;
                 }
             }
-            figures.get(i).draw();
-            figures.get(i).notifySubscribers();
+            figure.draw();
+            figure.notifySubscribers();
         }
 
 

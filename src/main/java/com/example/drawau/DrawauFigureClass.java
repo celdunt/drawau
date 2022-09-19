@@ -4,7 +4,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.io.Serializable;
@@ -180,12 +184,18 @@ public class DrawauFigureClass implements DrawauIFigure, DrawauIObservable
 
     public double getWidth()
     {
-        return container.getPrefWidth();
+        return Math.max(container.getWidth(), container.getPrefWidth());
     }
+
+    public VBox getContainer()
+    {
+        return container;
+    }
+
 
     public double getHeight()
     {
-        return container.getHeight() > 0 ? container.getHeight() : container.getPrefHeight();
+        return Math.max(container.getHeight(), container.getPrefHeight());
     }
 
     public void setLayoutX(double value)
@@ -271,12 +281,14 @@ public class DrawauFigureClass implements DrawauIFigure, DrawauIObservable
                 {
                     linkWorkSpace.getChildren().remove(container);
 
-                    for(DrawauArrow arrow : subscribersIn) {
+                    for (DrawauArrow arrow : subscribersIn)
+                    {
 
                         linkWorkSpace.getChildren().remove(arrow.getG());
                     }
 
-                    for(DrawauArrow arrow : subscribersOut) {
+                    for (DrawauArrow arrow : subscribersOut)
+                    {
                         linkWorkSpace.getChildren().remove(arrow.getG());
                     }
 
@@ -313,6 +325,16 @@ public class DrawauFigureClass implements DrawauIFigure, DrawauIObservable
                 if (container.getWidth() > 1)
                     sub.setEndWidthContainer(container.getWidth());
                 else sub.setEndWidthContainer(container.getPrefWidth());
+
+                container.widthProperty().addListener(action ->
+                {
+                    sub.setEndWidthContainer(getWidth());
+                });
+                container.heightProperty().addListener(action ->
+                {
+                    sub.setEndHeightContainer(getHeight());
+                });
+
                 sub.setEndY(container.getLayoutY());
                 subscribersIn.add(sub);
                 sub.draw();
@@ -330,6 +352,16 @@ public class DrawauFigureClass implements DrawauIFigure, DrawauIObservable
                 if (container.getWidth() > 1)
                     sub.setStartWidthContainer(container.getWidth());
                 else sub.setStartWidthContainer(container.getPrefWidth());
+
+                container.widthProperty().addListener(action ->
+                {
+                    sub.setStartWidthContainer(getWidth());
+                });
+                container.heightProperty().addListener(action ->
+                {
+                    sub.setStartHeightContainer(getHeight());
+                });
+
                 sub.setStartY(container.getLayoutY());
                 subscribersOut.add(sub);
 
@@ -384,7 +416,23 @@ public class DrawauFigureClass implements DrawauIFigure, DrawauIObservable
             container.getChildren().add(middle_part);
         }
 
-        container.getChildren().get((int) container.getChildren().stream().count() - 1).setStyle(setMargin("0 0 10 0"));
+
+        Rectangle separator = new Rectangle();
+        separator.setFill(Color.WHITE);
+        separator.setStroke(Color.WHITE);
+        separator.setWidth(getWidth() - 10);
+
+        container.widthProperty().addListener(action ->
+        {
+            separator.setWidth(getWidth() - 14);
+        });
+
+        separator.setHeight(0.01);
+
+
+        container.getChildren().get(container.getChildren().size() - 1).setStyle(setMargin("0 0 5 0"));
+        container.getChildren().add(separator);
+        container.getChildren().get(container.getChildren().size() - 1).setStyle(setMargin("0 0 5 0"));
 
         //Bottom-part
         for (FieldProperty method : methods)

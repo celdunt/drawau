@@ -8,7 +8,7 @@ public class DrawauFigureClassBuilder {
     protected double layoutY = 0;
     protected double width = 100;
     protected double height = 100;
-    protected String style = "-fx-background-color: #635380";
+    protected String style = "-fx-background-color: #635380; -fx-padding: 5;";
     protected String type = DrawauFigureClass.TYPE_SIMPLE;
     protected String name = "myClass";
     protected List<DrawauFigureClass.FieldProperty> fields = new ArrayList<>();
